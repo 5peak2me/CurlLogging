@@ -1,95 +1,117 @@
-This is a Kotlin Multiplatform project targeting Android, iOS, Web, Desktop (JVM), Server.
+# CurlLogging
 
-* [/composeApp](./composeApp/src) is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - [commonMain](./composeApp/src/commonMain/kotlin) is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    the [iosMain](./composeApp/src/iosMain/kotlin) folder would be the right place for such calls.
-    Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](./composeApp/src/jvmMain/kotlin)
-    folder is the appropriate location.
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.3.21-7F52FF?logo=kotlin)](https://kotlinlang.org)
+[![Ktor](https://img.shields.io/badge/Ktor-3.5.0-087CFA)](https://ktor.io)
+[![Version](https://img.shields.io/badge/Version-0.0.1--SNAPSHOT-orange)](https://github.com/5peak2me/CurlLogging/releases)
+[![License](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
-* [/iosApp](./iosApp/iosApp) contains iOS applications. Even if you’re sharing your UI with Compose Multiplatform,
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+## Introduction
 
-* [/server](./server/src/main/kotlin) is for the Ktor server application.
+CurlLogging is a Kotlin Multiplatform Ktor client plugin that logs outgoing requests as reproducible cURL commands.
 
-* [/shared](./shared/src) is for the code that will be shared between all targets in the project.
-  The most important subfolder is [commonMain](./shared/src/commonMain/kotlin). If preferred, you
-  can add code to the platform-specific folders here too.
+It is useful when you need to copy an app request into a terminal, share a failing request with another developer, or compare Ktor client behavior with a raw HTTP call.
 
-### Build and Run Android Application
+## Features
 
-To build and run the development version of the Android app, use the run configuration from the run widget
-in your IDE’s toolbar or build it directly from the terminal:
-- on macOS/Linux
-  ```shell
-  ./gradlew :composeApp:assembleDebug
-  ```
-- on Windows
-  ```shell
-  .\gradlew.bat :composeApp:assembleDebug
-  ```
+- Generates cURL commands from outgoing Ktor client requests.
+- Logs request method, URL, headers, content type, and request body.
+- Supports request filtering and sensitive header sanitization.
 
-### Build and Run Desktop (JVM) Application
+## Quick Start
 
-To build and run the development version of the desktop app, use the run configuration from the run widget
-in your IDE’s toolbar or run it directly from the terminal:
-- on macOS/Linux
-  ```shell
-  ./gradlew :composeApp:run
-  ```
-- on Windows
-  ```shell
-  .\gradlew.bat :composeApp:run
-  ```
+Add Maven Central:
 
-### Build and Run Server
+```kotlin
+repositories {
+    mavenCentral()
+}
+```
 
-To build and run the development version of the server, use the run configuration from the run widget
-in your IDE’s toolbar or run it directly from the terminal:
-- on macOS/Linux
-  ```shell
-  ./gradlew :server:run
-  ```
-- on Windows
-  ```shell
-  .\gradlew.bat :server:run
-  ```
+Add the dependency to `commonMain`:
 
-### Build and Run Web Application
+```kotlin
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation("io.github.5peak2me.kmp:curl-logging:0.0.1-SNAPSHOT")
+        }
+    }
+}
+```
 
-To build and run the development version of the web app, use the run configuration from the run widget
-in your IDE's toolbar or run it directly from the terminal:
-- for the Wasm target (faster, modern browsers):
-  - on macOS/Linux
-    ```shell
-    ./gradlew :composeApp:wasmJsBrowserDevelopmentRun
-    ```
-  - on Windows
-    ```shell
-    .\gradlew.bat :composeApp:wasmJsBrowserDevelopmentRun
-    ```
-- for the JS target (slower, supports older browsers):
-  - on macOS/Linux
-    ```shell
-    ./gradlew :composeApp:jsBrowserDevelopmentRun
-    ```
-  - on Windows
-    ```shell
-    .\gradlew.bat :composeApp:jsBrowserDevelopmentRun
-    ```
+Install `CurlLogging` in your Ktor `HttpClient`:
 
-### Build and Run iOS Application
+```kotlin
+import io.github.speak2me.kmp.curl.logging.CurlLogging
+import io.ktor.client.HttpClient
 
-To build and run the development version of the iOS app, use the run configuration from the run widget
-in your IDE’s toolbar or open the [/iosApp](./iosApp) directory in Xcode and run it from there.
+val client = HttpClient {
+    install(CurlLogging)
+}
+```
 
----
+Example output:
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html),
-[Compose Multiplatform](https://github.com/JetBrains/compose-multiplatform/#compose-multiplatform),
-[Kotlin/Wasm](https://kotl.in/wasm/)…
+```shell
+curl -X GET 'https://httpbin.org/get' -H 'Accept: */*' -H 'Accept-Charset: UTF-8' -H 'Content-Type: application/json'
+```
 
-We would appreciate your feedback on Compose/Web and Kotlin/Wasm in the public Slack channel [#compose-web](https://slack-chats.kotlinlang.org/c/compose-web).
-If you face any issues, please report them on [YouTrack](https://youtrack.jetbrains.com/newIssue?project=CMP).
+## Configuration
+
+Use a custom logger when you want to route commands to your own logging system:
+
+```kotlin
+import io.github.speak2me.kmp.curl.logging.CurlLogging
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.logging.Logger
+
+val client = HttpClient {
+    install(CurlLogging) {
+        logger = object : Logger {
+            override fun log(message: String) {
+                println(message)
+            }
+        }
+    }
+}
+```
+
+Filter which requests are logged:
+
+```kotlin
+install(CurlLogging) {
+    filter { request ->
+        request.url.host == "api.example.com"
+    }
+}
+```
+
+Sanitize sensitive headers:
+
+```kotlin
+import io.ktor.http.HttpHeaders
+
+install(CurlLogging) {
+    sanitizeHeader { header ->
+        header == HttpHeaders.Authorization
+    }
+}
+```
+
+## Development
+
+Run a quick JVM compile check:
+
+```shell
+./gradlew :shared:compileKotlinJvm
+```
+
+On Windows:
+
+```shell
+.\gradlew.bat :shared:compileKotlinJvm
+```
+
+## License
+
+[![License](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
