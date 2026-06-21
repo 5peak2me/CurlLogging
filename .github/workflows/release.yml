@@ -1,0 +1,93 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - shared/gradle.properties
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: Validate
+        run: ./gradlew :shared:compileKotlinJvm
+
+      - name: Read version
+        id: version
+        run: |
+          version="$(grep '^VERSION_NAME=' shared/gradle.properties | cut -d= -f2)"
+
+          if [ -z "${version}" ]; then
+            echo "VERSION_NAME is missing."
+            exit 1
+          fi
+
+          if [[ "${version}" == *-SNAPSHOT ]]; then
+            echo "VERSION_NAME=${version} is not releasable."
+            exit 1
+          fi
+
+          echo "version=${version}" >> "${GITHUB_OUTPUT}"
+          echo "tag=v${version}" >> "${GITHUB_OUTPUT}"
+
+      - name: Update README version
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          badge_version="${VERSION//-/--}"
+          sed -i "s#Version-[^)]*-orange#Version-${badge_version}-orange#" README.md
+          sed -i "s/io.github.5peak2me.kmp:curl-logging:[^\"]*/io.github.5peak2me.kmp:curl-logging:${VERSION}/" README.md
+
+          if git diff --quiet -- README.md; then
+            exit 0
+          fi
+
+          git add README.md
+          git commit -m "docs(readme): update version to ${VERSION}"
+          git push origin HEAD:${GITHUB_REF_NAME}
+
+      - name: Create tag
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          git fetch origin "${GITHUB_REF_NAME}" --tags
+          git checkout "${GITHUB_REF_NAME}"
+          git pull --ff-only origin "${GITHUB_REF_NAME}"
+
+          if git rev-parse "refs/tags/${TAG}" >/dev/null 2>&1; then
+            echo "Tag ${TAG} already exists."
+            exit 1
+          fi
+
+          git tag -a "${TAG}" -m "${TAG}"
+          git push origin "${TAG}"
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          gh release create "${TAG}" --verify-tag --title "${TAG}" --generate-notes
