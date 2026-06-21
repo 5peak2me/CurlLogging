@@ -1,9 +1,7 @@
-# CurlLogging
+# CurlLogging [![Version](https://img.shields.io/badge/Version-0.0.1-orange)](https://github.com/5peak2me/CurlLogging/releases)
 
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.3.21-7F52FF?logo=kotlin)](https://kotlinlang.org)
 [![Ktor](https://img.shields.io/badge/Ktor-3.5.0-087CFA)](https://ktor.io)
-[![Version](https://img.shields.io/badge/Version-0.0.1-orange)](https://github.com/5peak2me/CurlLogging/releases)
-[![License](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
 ## Introduction
 
