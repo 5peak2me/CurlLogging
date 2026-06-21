@@ -274,9 +274,7 @@ public val CurlLogging: ClientPlugin<LoggingConfig> = createClientPlugin("CurlLo
         GlobalScope.launch(Dispatchers.Default + MDCContext()) {
             try {
                 val text = channel.tryReadText(charset) ?: "[request body omitted]"
-//                requestLog.appendLine("BODY START")
-                if (text.isNotEmpty()) requestLog.appendLine(" --data '${text.replace(Regex("\\s+"), "")}'")
-//                requestLog.append("BODY END")
+                if (text.isNotEmpty()) requestLog.append(" --data-raw ${text.shellSingleQuoted()}")
             } finally {
                 logger.logRequest(requestLog.toString())
                 logger.closeRequestLog()
@@ -296,7 +294,7 @@ public val CurlLogging: ClientPlugin<LoggingConfig> = createClientPlugin("CurlLo
         request.attributes.put(ClientCallLogger, callLogger)
 
         val message = buildString {
-            append("curl -X ${request.method} ${Url(request.url)}")
+            append("curl -X ${request.method.value} ${Url(request.url).toString().shellSingleQuoted()}")
 
             // headers
             logHeaders(request.headers.entries(), sanitizedHeaders)
@@ -307,9 +305,9 @@ public val CurlLogging: ClientPlugin<LoggingConfig> = createClientPlugin("CurlLo
             val contentTypePlaceholder = sanitizedHeaders
                 .firstOrNull { it.predicate(HttpHeaders.ContentType) }
                 ?.placeholder
-            content.contentLength?.takeIf { it > 0 }?.let {
+//            content.contentLength?.takeIf { it > 0 }?.let {
 //                logHeader(HttpHeaders.ContentLength, contentLengthPlaceholder ?: it.toString())
-            }
+//            }
             content.contentType?.let {
                 logHeader(HttpHeaders.ContentType, contentTypePlaceholder ?: it.toString())
             }

@@ -28,5 +28,7 @@ internal fun Appendable.logHeaders(
 }
 
 internal fun Appendable.logHeader(key: String, value: String) {
-    append(" -H '$key: $value'")
+    append(" -H ${"$key: $value".shellSingleQuoted()}")
 }
+
+internal fun String.shellSingleQuoted(): String = "'${replace("'", "'\"'\"'")}'"

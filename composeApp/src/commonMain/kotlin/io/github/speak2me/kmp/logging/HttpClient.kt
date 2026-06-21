@@ -40,7 +40,7 @@ internal fun HttpClientConfig<*>.defaultHttpClientConfig() {
     install(CurlLogging) {
         logger = object : Logger {
             override fun log(message: String) {
-                println("[cURL]: $message")
+                println("╭──────╮ \n│ cURL │: $message\n╰──────╯ ️")
             }
         }
         filter {
