@@ -1,0 +1,38 @@
+{
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  minimumReleaseAge: '1 month',
+  dependencyDashboard: true,
+  extends: [
+    'config:recommended',
+  ],
+  ignorePresets: [
+    'workarounds:javaLTSVersions',
+  ],
+  customManagers: [
+    {
+      customType: 'regex',
+      managerFilePatterns: [
+        '/^\\.java-version$/',
+      ],
+      matchStrings: [
+        '(?<currentValue>.*)\\n',
+      ],
+      datasourceTemplate: 'java-version',
+      depNameTemplate: 'java',
+      extractVersionTemplate: '^(?<version>\\d+)',
+    },
+  ],
+  forkProcessing: 'enabled',
+  packageRules: [
+    {
+      matchUpdateTypes: [
+        'patch',
+        'minor',
+        'pin',
+        'digest',
+      ],
+      automerge: true,
+      automergeType: 'branch',
+    },
+  ],
+}
