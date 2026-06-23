@@ -1,7 +1,9 @@
 # CurlLogging [![Version](https://img.shields.io/badge/Version-0.0.1-orange)](https://github.com/5peak2me/CurlLogging/releases)
 
-[![Kotlin](https://img.shields.io/badge/Kotlin-2.3.21-7F52FF?logo=kotlin)](https://kotlinlang.org)
-[![Ktor](https://img.shields.io/badge/Ktor-3.5.0-087CFA)](https://ktor.io)
+[![Ktor](https://img.shields.io/badge/dynamic/toml?url=https://raw.githubusercontent.com/5peak2me/CurlLogging/main/gradle/libs.versions.toml&query=%24.versions.ktor&label=Kotlin&color=blue&logo=ktor)](https://ktor.io)
+[![Kotlin](https://img.shields.io/badge/dynamic/toml?url=https://raw.githubusercontent.com/5peak2me/CurlLogging/main/gradle/libs.versions.toml&query=%24.versions.kotlin&label=Kotlin&color=blue&logo=kotlin)](https://kotlinlang.org)
+[![AGP](https://img.shields.io/badge/dynamic/toml?url=https://raw.githubusercontent.com/5peak2me/CurlLogging/main/gradle/libs.versions.toml&query=%24.versions.agp&label=AGP&color=blue&logo=android)](https://developer.android.com/build/releases/gradle-plugin)
+[![Gradle](https://img.shields.io/badge/dynamic/regex?url=https%3A%2F%2Fraw.githubusercontent.com%2F5peak2me%2FCurlLogging%2Fmain%2Fgradle%2Fwrapper%2Fgradle-wrapper.properties&search=gradle-%28%5B0-9.%5D%2B%29-%28%3F%3Abin%7Call%29%5C.zip&replace=%241&label=Gradle&color=blue&logo=gradle&logoColor=white)](https://gradle.org)
 
 ## Introduction
 
