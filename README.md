@@ -1,4 +1,5 @@
-# CurlLogging [![Version](https://img.shields.io/badge/Version-0.0.1-orange)](https://github.com/5peak2me/CurlLogging/releases)
+# CurlLogging [![Maven Central Version](https://img.shields.io/maven-central/v/io.github.5peak2me.kmp/curl-logging)](https://github.com/5peak2me/CurlLogging/releases)
+
 
 [![Ktor](https://img.shields.io/badge/dynamic/toml?url=https://raw.githubusercontent.com/5peak2me/CurlLogging/main/gradle/libs.versions.toml&query=$.versions.ktor&label=Kotlin&color=blue&logo=ktor)](https://ktor.io)
 [![Kotlin](https://img.shields.io/badge/dynamic/toml?url=https://raw.githubusercontent.com/5peak2me/CurlLogging/main/gradle/libs.versions.toml&query=$.versions.kotlin&label=Kotlin&color=blue&logo=kotlin)](https://kotlinlang.org)
