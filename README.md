@@ -1,8 +1,9 @@
 # CurlLogging [![Maven Central Version](https://img.shields.io/maven-central/v/io.github.5peak2me.kmp/curl-logging)](https://github.com/5peak2me/CurlLogging/releases)
 
 
-[![Ktor](https://img.shields.io/badge/dynamic/toml?url=https://raw.githubusercontent.com/5peak2me/CurlLogging/main/gradle/libs.versions.toml&query=$.versions.ktor&label=Kotlin&color=blue&logo=ktor)](https://ktor.io)
+[![Ktor](https://img.shields.io/badge/dynamic/toml?url=https://raw.githubusercontent.com/5peak2me/CurlLogging/main/gradle/libs.versions.toml&query=$.versions.ktor&label=Ktor&color=blue&logo=ktor)](https://ktor.io)
 [![Kotlin](https://img.shields.io/badge/dynamic/toml?url=https://raw.githubusercontent.com/5peak2me/CurlLogging/main/gradle/libs.versions.toml&query=$.versions.kotlin&label=Kotlin&color=blue&logo=kotlin)](https://kotlinlang.org)
+[![Kotlin Multiplatform](https://img.shields.io/badge/dynamic/toml?url=https://raw.githubusercontent.com/5peak2me/CurlLogging/main/gradle/libs.versions.toml&query=$.versions.kotlin&label=Kotlin%20Multiplatform&color=blue&logo=kotlin)](https://kotlinlang.org)
 [![AGP](https://img.shields.io/badge/dynamic/toml?url=https://raw.githubusercontent.com/5peak2me/CurlLogging/main/gradle/libs.versions.toml&query=$.versions.agp&label=AGP&color=blue&logo=android)](https://developer.android.com/build/releases/gradle-plugin)
 [![Gradle](https://img.shields.io/badge/dynamic/regex?url=https://raw.githubusercontent.com/5peak2me/CurlLogging/main/gradle/wrapper/gradle-wrapper.properties&search=gradle-([0-9.]%2B)-(?:bin|all)\.zip&replace=$1&label=Gradle&color=blue&logo=gradle)](https://gradle.org)
 
