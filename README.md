@@ -5,7 +5,8 @@
 [![Kotlin](https://img.shields.io/badge/dynamic/toml?url=https://raw.githubusercontent.com/5peak2me/CurlLogging/main/gradle/libs.versions.toml&query=$.versions.kotlin&label=Kotlin&color=blue&logo=kotlin)](https://kotlinlang.org)
 [![Kotlin Multiplatform](https://img.shields.io/badge/dynamic/toml?url=https://raw.githubusercontent.com/5peak2me/CurlLogging/main/gradle/libs.versions.toml&query=$.versions.kotlin&label=Kotlin%20Multiplatform&color=blue&logo=kotlin)](https://kotlinlang.org)
 [![AGP](https://img.shields.io/badge/dynamic/toml?url=https://raw.githubusercontent.com/5peak2me/CurlLogging/main/gradle/libs.versions.toml&query=$.versions.agp&label=AGP&color=blue&logo=android)](https://developer.android.com/build/releases/gradle-plugin)
-[![Gradle](https://img.shields.io/badge/dynamic/regex?url=https://raw.githubusercontent.com/5peak2me/CurlLogging/main/gradle/wrapper/gradle-wrapper.properties&search=gradle-([0-9.]%2B)-(?:bin|all)\.zip&replace=$1&label=Gradle&color=blue&logo=gradle)](https://gradle.org)
+[![Gradle](https://img.shields.io/badge/dynamic/regex?url=https://raw.githubusercontent.com/5peak2me/CurlLogging/main/gradle/wrapper/gradle-wrapper.properties&search=gradle-([0-9.]%2B)-(?:bin%7Call)\.zip&replace=$1&label=Gradle&color=blue&logo=gradle)](https://gradle.org)
+
 
 ## Introduction
 
